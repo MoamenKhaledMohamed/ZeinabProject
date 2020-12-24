@@ -4,8 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-
-	C "./controllers"
+	//C "./controllers"
 )
 
 func main() {
@@ -42,7 +41,7 @@ func main() {
 	// r.HandleFunc("/book/{name}", Handler).Methods("GET")
 
 	// // get books
-	r.HandleFunc("/books", C.Handler).Methods("GET")
+	r.HandleFunc("/books", Handler).Methods("GET")
 
 	// // edit book
 	// r.HandleFunc("/book/{id}", Handler).Methods("PUT")
