@@ -4,7 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	//C "./controllers"
+
+	C "github.com/MoamenKhaled/Controllers"
 )
 
 func main() {
@@ -13,13 +14,13 @@ func main() {
 
 	// ############# Routes For Reader ###########
 	// add a reader
-	// r.HandleFunc("/reader", Handler).Methods("POST")
+	r.HandleFunc("/reader", C.CreateReader).Methods("POST")
 
-	// // delete a reader
+	// delete a reader
 	// r.HandleFunc("/reader/{id}", Handler).Methods("DELETE")
 
-	// // get readers
-	// r.HandleFunc("/readers", Handler).Methods("GET")
+	// get readers
+	r.HandleFunc("/readers", C.GetReaders).Methods("GET")
 
 	// // search by id
 	// r.HandleFunc("/reader/{id}", Handler).Methods("GET")
@@ -41,7 +42,7 @@ func main() {
 	// r.HandleFunc("/book/{name}", Handler).Methods("GET")
 
 	// // get books
-	r.HandleFunc("/books", Handler).Methods("GET")
+	// r.HandleFunc("/books", C.Handler).Methods("GET")
 
 	// // edit book
 	// r.HandleFunc("/book/{id}", Handler).Methods("PUT")
