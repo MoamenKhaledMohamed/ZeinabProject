@@ -2,13 +2,14 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strconv"
 	"strings"
 
 	O "github.com/MoamenKhaled/data"
+
+	"github.com/gorilla/mux"
 )
 
 // my reader'sStruct
@@ -21,13 +22,34 @@ type reader struct {
 	Employment string `json:"employment"`
 }
 
+func ConvertReaderToRow(oneReader reader) string {
+	row := strconv.Itoa(oneReader.Id) + " "
+	row += oneReader.Name + " "
+	row += oneReader.Birthday + " "
+	row += strconv.Itoa(oneReader.Height) + " "
+	row += strconv.Itoa(oneReader.Weight) + " "
+	row += oneReader.Employment
+	row += "\n"
+	return row
+}
 func CreateReader(w http.ResponseWriter, r *http.Request) {
+	// take data from body of request
 	reqBody, _ := ioutil.ReadAll(r.Body)
-	fmt.Fprintf(w, "%+v", string(reqBody))
+
+	// store data into oneReader
+	var oneReader reader
+	json.Unmarshal(reqBody, &oneReader)
+
+	// convert data to string (row)
+	row := ConvertReaderToRow(oneReader)
+	// write in file
+	O.AddRow("data/readers.txt", row)
+
+	json.NewEncoder(w).Encode(oneReader)
 
 }
 
-func GetReaders(w http.ResponseWriter, r *http.Request) {
+func GetArrayOfReaders() []reader {
 	// open file and return rows
 	rows := O.GetRows("data/readers.txt")
 
@@ -55,6 +77,59 @@ func GetReaders(w http.ResponseWriter, r *http.Request) {
 		readers = append(readers, newReader)
 
 	}
+	return readers
+}
+
+func GetReaders(w http.ResponseWriter, r *http.Request) {
+	readers := GetArrayOfReaders()
 	json.NewEncoder(w).Encode(readers)
 
+}
+
+func DeleteReader(w http.ResponseWriter, r *http.Request) {
+	// take the path variable
+	// convert it to int
+	vars := mux.Vars(r)
+	id, _ := strconv.Atoi(vars["id"])
+
+	// get all readers then search for a specific reader
+	// delete the file then write again without the deleted reader
+	readers := GetArrayOfReaders()
+	O.RemoveFile("data/readers.txt")
+	for _, reader := range readers {
+		if reader.Id != id {
+			row := ConvertReaderToRow(reader)
+			O.AddRow("data/readers.txt", row)
+		}
+	}
+
+}
+
+func SearchById(w http.ResponseWriter, r *http.Request) {
+	// take the path variable
+	// convert it to int
+	vars := mux.Vars(r)
+	id, _ := strconv.Atoi(vars["id"])
+
+	readers := GetArrayOfReaders()
+	for _, reader := range readers {
+		if reader.Id == id {
+			json.NewEncoder(w).Encode(reader)
+		}
+	}
+
+}
+
+func SearchByName(w http.ResponseWriter, r *http.Request) {
+	// take the path variable
+	// convert it to int
+	vars := mux.Vars(r)
+	name := vars["name"]
+
+	readers := GetArrayOfReaders()
+	for _, reader := range readers {
+		if reader.Name == name {
+			json.NewEncoder(w).Encode(reader)
+		}
+	}
 }

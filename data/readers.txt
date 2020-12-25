@@ -1,2 +1,5 @@
-1 Aly 1995/12/10 2 60 programmer
-2 Ahmed 1998/12/10 2 60 programmer
+2 Ali 1965/12/4 2 80 doctor
+3 Khaled 1965/12/4 3 70 dentist
+4 Amr 1965/12/4 3 70 dentist
+4 Mona 1965/12/4 3 70 dentist
+5 Osman 1968/5/1 1 70 lawyer

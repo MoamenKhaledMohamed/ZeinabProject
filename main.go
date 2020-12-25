@@ -17,16 +17,16 @@ func main() {
 	r.HandleFunc("/reader", C.CreateReader).Methods("POST")
 
 	// delete a reader
-	// r.HandleFunc("/reader/{id}", Handler).Methods("DELETE")
+	r.HandleFunc("/reader/{id}", C.DeleteReader).Methods("DELETE")
 
 	// get readers
 	r.HandleFunc("/readers", C.GetReaders).Methods("GET")
 
-	// // search by id
-	// r.HandleFunc("/reader/{id}", Handler).Methods("GET")
+	// search by id
+	r.HandleFunc("/reader/{id}", C.SearchById).Methods("GET")
 
-	// // search by name
-	// r.HandleFunc("/reader/{name}", Handler).Methods("GET")
+	// search by name
+	r.HandleFunc("/readerName/{name}", C.SearchByName).Methods("GET")
 
 	// ############ End Routes ###################
 
