@@ -47,9 +47,9 @@ func main() {
 	// edit book
 	r.HandleFunc("/bookEdit/{id}", C.EditBook).Methods("PUT")
 
-	// // sort by title or publication
-	// r.HandleFunc("/book/sort-by-title", Handler).Methods("GET")
-	// r.HandleFunc("/book/sort-by-publication", Handler).Methods("GET")
+	// sort by title or publication
+	r.HandleFunc("/book-sort-by-title", C.SortByTitle).Methods("GET")
+	r.HandleFunc("/book-sort-by-publication", C.SortByPublication).Methods("GET")
 
 	// ############ End Routes ####################
 

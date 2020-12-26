@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -121,21 +122,21 @@ func SearchByNameForBook(w http.ResponseWriter, r *http.Request) {
 }
 
 func EditBook(w http.ResponseWriter, r *http.Request) {
-	// get json
-	// convert to sruct
-	// delete file
-	// write in file once we fouch that record we will updated
-	// take data from body of request
+	// Get Data From Request'sbody
 	reqBody, _ := ioutil.ReadAll(r.Body)
 
-	// store data into oneBook
+	// Convert Json To Book
 	var updatedBook book
 	json.Unmarshal(reqBody, &updatedBook)
 
+	// Get Array Of Books
 	books := GetArrayOfBooks()
 
+	// Remove The File
 	O.RemoveFile("data/books.txt")
 
+	// Write In The File
+	// Don't Forget To add The UpdatedBook By Condition
 	for _, book := range books {
 		if book.Id == updatedBook.Id {
 			row := ConvertBookToRow(updatedBook)
@@ -147,4 +148,26 @@ func EditBook(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+}
+
+func SortByTitle(w http.ResponseWriter, r *http.Request) {
+	// Get Books
+	books := GetArrayOfBooks()
+
+	// Sort Books By Title
+	sort.SliceStable(books, func(i, j int) bool {
+		return books[i].Title < books[j].Title
+	})
+	json.NewEncoder(w).Encode(books)
+}
+
+func SortByPublication(w http.ResponseWriter, r *http.Request) {
+	// Get Books
+	books := GetArrayOfBooks()
+
+	// Sort Books By Title
+	sort.SliceStable(books, func(i, j int) bool {
+		return books[i].Publicaton < books[j].Publicaton
+	})
+	json.NewEncoder(w).Encode(books)
 }
