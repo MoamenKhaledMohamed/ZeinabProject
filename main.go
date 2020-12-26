@@ -33,16 +33,16 @@ func main() {
 	// ############ Routes For Bookstore #########
 
 	// add a book
-	// r.HandleFunc("/book", Handler).Methods("POST")
+	r.HandleFunc("/book", C.CreateBook).Methods("POST")
 
 	// search by id
-	// r.HandleFunc("/book/{id}", Handler).Methods("GET")
+	r.HandleFunc("/book/{id}", C.SearchByIdForBook).Methods("GET")
 
-	// // search by name
-	// r.HandleFunc("/book/{name}", Handler).Methods("GET")
+	// search by name
+	r.HandleFunc("/bookTitle/{title}", C.SearchByNameForBook).Methods("GET")
 
-	// // get books
-	// r.HandleFunc("/books", C.Handler).Methods("GET")
+	// get books
+	r.HandleFunc("/books", C.GetBooks).Methods("GET")
 
 	// // edit book
 	// r.HandleFunc("/book/{id}", Handler).Methods("PUT")
