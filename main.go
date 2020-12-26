@@ -44,8 +44,8 @@ func main() {
 	// get books
 	r.HandleFunc("/books", C.GetBooks).Methods("GET")
 
-	// // edit book
-	// r.HandleFunc("/book/{id}", Handler).Methods("PUT")
+	// edit book
+	r.HandleFunc("/bookEdit/{id}", C.EditBook).Methods("PUT")
 
 	// // sort by title or publication
 	// r.HandleFunc("/book/sort-by-title", Handler).Methods("GET")

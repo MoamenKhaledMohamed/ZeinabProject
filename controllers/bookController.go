@@ -119,3 +119,32 @@ func SearchByNameForBook(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 }
+
+func EditBook(w http.ResponseWriter, r *http.Request) {
+	// get json
+	// convert to sruct
+	// delete file
+	// write in file once we fouch that record we will updated
+	// take data from body of request
+	reqBody, _ := ioutil.ReadAll(r.Body)
+
+	// store data into oneBook
+	var updatedBook book
+	json.Unmarshal(reqBody, &updatedBook)
+
+	books := GetArrayOfBooks()
+
+	O.RemoveFile("data/books.txt")
+
+	for _, book := range books {
+		if book.Id == updatedBook.Id {
+			row := ConvertBookToRow(updatedBook)
+			O.AddRow("data/books.txt", row)
+			json.NewEncoder(w).Encode(updatedBook)
+		} else {
+			row := ConvertBookToRow(book)
+			O.AddRow("data/books.txt", row)
+		}
+	}
+
+}
