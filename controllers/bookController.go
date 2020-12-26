@@ -165,7 +165,7 @@ func SortByPublication(w http.ResponseWriter, r *http.Request) {
 	// Get Books
 	books := GetArrayOfBooks()
 
-	// Sort Books By Title
+	// Sort Books By Publication
 	sort.SliceStable(books, func(i, j int) bool {
 		return books[i].Publicaton < books[j].Publicaton
 	})
