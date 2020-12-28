@@ -80,8 +80,17 @@ func GetArrayOfReaders() []reader {
 	return readers
 }
 
+func setupResponse(w *http.ResponseWriter, req *http.Request) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+	(*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	(*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+}
+
 func GetReaders(w http.ResponseWriter, r *http.Request) {
 	readers := GetArrayOfReaders()
+	// enableCors(&w)
+	//(w).Header().Set("Access-Control-Allow-Origin", "*")
+	//setupResponse(&w, r)
 	json.NewEncoder(w).Encode(readers)
 
 }

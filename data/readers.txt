@@ -1,5 +1,3 @@
-2 Ali 1965/12/4 2 80 doctor
-3 Khaled 1965/12/4 3 70 dentist
-4 Amr 1965/12/4 3 70 dentist
-4 Mona 1965/12/4 3 70 dentist
 5 Osman 1968/5/1 1 70 lawyer
+1 Youssef 1955/5/7 0 0 softwareEngineer
+7 ali 1955/5/7 1 50 no

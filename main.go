@@ -1,11 +1,14 @@
 package main
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
 
 	C "github.com/MoamenKhaled/Controllers"
+
+	"github.com/gorilla/handlers"
 )
 
 func main() {
@@ -54,5 +57,6 @@ func main() {
 	// ############ End Routes ####################
 
 	// server listens on port 8080
-	http.ListenAndServe(":8080", r)
+	//http.ListenAndServe(":8080", r)
+	log.Fatal(http.ListenAndServe(":8080", handlers.CORS(handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}), handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "OPTIONS", "DELETE"}), handlers.AllowedOrigins([]string{"*"}))(r)))
 }

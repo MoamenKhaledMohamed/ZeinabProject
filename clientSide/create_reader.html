@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+  <form onsubmit = "event.preventDefault(); createReader();">
+    <label for="id">ID</label><br>
+    <input type="text" name="id" value="Enter your Id"><br>
+    
+    <label for="name">Name:</label><br>
+    <input type="text" id="lname" name="name" ><br><br>
+    
+    <label for="name">BirthDay:</label><br>
+    <input type="text" id="BirthDay" name="birthday"><br><br>
+    
+    <label for="name">Height:</label><br>
+    <input type="text" id="Height" name="height"> <br><br>
+    
+    <label for="name">Weight:</label><br>
+    <input type="text" id="lname" name="weight" ><br><br>
+    
+     <label for="name">Employment:</label><br>
+    <input type="text" id="lname" name="employment" ><br><br>
+    
+    <input type="submit" value="Submit">
+  </form>
+  <script>
+    function createReader(){
+      let dataToJson = {}
+      // take data from form as array
+      let data = $('form').serializeArray()
+
+      // fill the object (dataToJson)
+      for(let i = 0; i < data.length; i++){
+        let row = data[i]
+        if(row.name == "weight" || row.name == "height" || row.name == "id")
+          row.value = parseInt(row.value)
+        dataToJson[row["name"]] = row["value"]
+
+      }
+
+      // convert to json
+      dataToJson = JSON.stringify(dataToJson);
+      $.post("http://localhost:8080/reader",dataToJson)
+    }
+   
+  </script>
+</body>
+</html>

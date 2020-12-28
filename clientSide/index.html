@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <!-- nav bar -->
+    <nav class="navbar navbar-light bg-light justify-content-between">
+        <a class="navbar-brand" href="index.html">Readers</a>
+        <a class="navbar-brand" href="book.html">Books</a>
+        <form class="form-inline">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+      </nav>
+      <!-- End Nav -->
+
+      <!-- A Button For Create A Reader -->
+      <a type="button" class="btn btn-primary btn-lg btn-block" href="create_reader.html">Create A Reader</a>
+
+      <!-- Table For Display Readers -->
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">BirthDay</th>
+            <th scope="col">Height</th>
+            <th scope="col">Weight</th>
+            <th scope="col">Employment</th>
+            <th scope="col">Delete</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          
+        </tbody>
+      </table>
+      
+      <script>
+  
+        $.get("http://localhost:8080/readers", function(data, status){
+            let readers = JSON.parse(data)
+            console.log(readers)
+
+            let tbody = document.getElementById("tbody");
+
+            for (let i = 0; i < readers.length; i++) {
+                let reader = readers[i];
+                let tr = document.createElement('tr');
+                
+                // create a button for delete
+                let form = document.createElement('form');
+                form.setAttribute('onsubmit', "event.preventDefault(); deleteReader(" + reader.id + ");");
+                // <button type="button" class="btn btn-outline-danger">Danger</button>
+                let input = document.createElement('input')
+                input.setAttribute('type', 'submit');
+                input.setAttribute('value', 'Delete')
+                form.appendChild(input)
+
+                for (const [key, value] of Object.entries(reader)) {
+                    let td = document.createElement('td');
+                    let tData = document.createTextNode(value);
+                    td.appendChild(tData);
+                    tr.appendChild(td);
+                   
+                }
+                let td = document.createElement('td');
+                td.appendChild(form)
+                // appedn a button to tr
+                tr.appendChild(td);
+                tbody.appendChild(tr);
+            }
+        });
+
+        // delte reader 
+        function deleteReader(id) {
+          console.log(id)
+          $.ajax({
+            url: 'http://localhost:8080/reader/' + id,
+            type: 'DELETE'
+            });
+            location.reload();
+        }
+
+     </script>
+</body>
+</html>
