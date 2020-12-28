@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <title>Book</title>
+    </head>
+    <body>
+        <!-- nav bar -->
+        <nav class="navbar navbar-light bg-light justify-content-between">
+            <a class="navbar-brand" href="index.html">Readers</a>
+            <a class="navbar-brand" href="book.html">Books</a>
+            <form class="form-inline" onsubmit = "event.preventDefault(); search();">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="key-search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </nav>
+        <!-- End Nav -->
+
+        <!-- A Button For Create A Book -->
+        <a type="button" class="btn btn-primary btn-lg btn-block" href="create_book.html">Create A Book</a>
+        
+        <!-- Table For Display Books -->
+        <table class="table">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Title</th>
+                <th scope="col">Publication</th>
+                <th scope="col">Date</th>
+                <th scope="col">Author</th>
+                <th scope="col">Genre</th>
+                <th scope="col">Publisher</th>
+                <th scope="col">Language</th>
+            </tr>
+            </thead>
+            <tbody id="tbody">
+            
+            </tbody>
+        </table>
+
+        <!-- A Button For Sort By Title-->
+        <a type="button" class="btn btn-primary btn-lg btn-block" href="">Sort By Title </a>
+
+        <!-- A Button For Sort By Publication-->
+        <a type="button" class="btn btn-primary btn-lg btn-block" href="">Sort By Publicaton</a>
+
+        <script>
+            // get data then display in Table
+            $.get("http://localhost:8080/books", function(data, status){
+            let books = JSON.parse(data)
+            console.log(books)
+
+            let tbody = document.getElementById("tbody");
+
+            for (let i = 0; i < books.length; i++) {
+                let book = books[i];
+                let tr = document.createElement('tr');
+                
+                for (const [key, value] of Object.entries(book)) {
+                    let td = document.createElement('td');
+                    let tData = document.createTextNode(value);
+                    td.appendChild(tData);
+                    tr.appendChild(td);
+                   
+                }
+                tbody.appendChild(tr);
+            }
+        });
+
+        function search() {
+          // take data and insert to link
+          let keySearch = $("#key-search").val();
+          
+          // check the keySearch is id or name
+          if(isNaN(keySearch)){
+              // create get request to search by name
+              $.get('http://localhost:8080/bookTitle/' + keySearch, function(data, status){
+              if(data == "")
+                data = "NotFound"
+              alert("Data: " + data + "\nStatus: " + status);
+              });
+          }
+          else{
+              // create get request to search by Id
+              $.get('http://localhost:8080/book/' + keySearch, function(data, status){
+                if(data == "")
+                  data = "NotFound"
+                alert("Data: " + data + "\nStatus: " + status);
+            });
+          }
+          
+          
+        }
+        </script>
+    </body>
+</html>

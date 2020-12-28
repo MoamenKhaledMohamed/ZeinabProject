@@ -48,6 +48,7 @@ func CreateBook(w http.ResponseWriter, r *http.Request) {
 
 	// convert data to string (row)
 	row := ConvertBookToRow(oneBook)
+
 	// write in file
 	O.AddRow("data/books.txt", row)
 
