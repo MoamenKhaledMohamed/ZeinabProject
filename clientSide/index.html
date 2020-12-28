@@ -16,8 +16,8 @@
     <nav class="navbar navbar-light bg-light justify-content-between">
         <a class="navbar-brand" href="index.html">Readers</a>
         <a class="navbar-brand" href="book.html">Books</a>
-        <form class="form-inline">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <form class="form-inline" onsubmit = "event.preventDefault(); search();">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="key-search">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
       </nav>
@@ -80,7 +80,7 @@
             }
         });
 
-        // delte reader 
+        // delete a reader 
         function deleteReader(id) {
           console.log(id)
           $.ajax({
@@ -90,6 +90,30 @@
             location.reload();
         }
 
+        function search() {
+          // take data and insert to link
+          let keySearch = $("#key-search").val();
+          
+          // check the keySearch is id or name
+          if(isNaN(keySearch)){
+              // create get request to search by name
+              $.get('http://localhost:8080/readerName/' + keySearch, function(data, status){
+              if(data == "")
+                data = "NotFound"
+              alert("Data: " + data + "\nStatus: " + status);
+              });
+          }
+          else{
+              // create get request to search by Id
+              $.get('http://localhost:8080/reader/' + keySearch, function(data, status){
+                if(data == "")
+                  data = "NotFound"
+                alert("Data: " + data + "\nStatus: " + status);
+            });
+          }
+          
+          
+        }
      </script>
 </body>
 </html>
