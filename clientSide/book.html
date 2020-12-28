@@ -46,10 +46,49 @@
         </table>
 
         <!-- A Button For Sort By Title-->
-        <a type="button" class="btn btn-primary btn-lg btn-block" href="">Sort By Title </a>
+        <a type="button" class="btn btn-primary btn-lg btn-block" href="" onclick="event.preventDefault(); sortByTitle();">Sort By Title </a>
+
+        <!-- Table For Display sorted Books by title-->
+        <table class="table">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Title</th>
+                <th scope="col">Publication</th>
+                <th scope="col">Date</th>
+                <th scope="col">Author</th>
+                <th scope="col">Genre</th>
+                <th scope="col">Publisher</th>
+                <th scope="col">Language</th>
+            </tr>
+            </thead>
+            <tbody id="sbody">
+            
+            </tbody>
+        </table>
+
 
         <!-- A Button For Sort By Publication-->
-        <a type="button" class="btn btn-primary btn-lg btn-block" href="">Sort By Publicaton</a>
+        <a type="button" class="btn btn-primary btn-lg btn-block" href="" onclick="event.preventDefault(); sortByPublication();" >Sort By Publicaton</a>
+
+        <!-- Table For Display sorted Books by publication-->
+        <table class="table">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Title</th>
+                <th scope="col">Publication</th>
+                <th scope="col">Date</th>
+                <th scope="col">Author</th>
+                <th scope="col">Genre</th>
+                <th scope="col">Publisher</th>
+                <th scope="col">Language</th>
+            </tr>
+            </thead>
+            <tbody id="pbody">
+            
+            </tbody>
+        </table>
 
         <script>
             // get data then display in Table
@@ -97,6 +136,58 @@
           }
           
           
+        }
+
+        // sort by title
+        function sortByTitle() {
+                // get data then display in Table
+                $.get("http://localhost:8080/book-sort-by-title", function(data, status){
+                let books = JSON.parse(data)
+                console.log(books)
+
+                let sbody = document.getElementById("sbody");
+
+                for (let i = 0; i < books.length; i++) {
+                    let book = books[i];
+                    let tr = document.createElement('tr');
+                    
+                    for (const [key, value] of Object.entries(book)) {
+                        let td = document.createElement('td');
+                        let tData = document.createTextNode(value);
+                        td.appendChild(tData);
+                        tr.appendChild(td);
+                    
+                    }
+                    sbody.appendChild(tr);
+                }
+            });
+
+        }
+
+        // sort by publication
+        function sortByPublication() {
+                // get data then display in Table
+                $.get("http://localhost:8080/book-sort-by-publication", function(data, status){
+                let books = JSON.parse(data)
+                console.log(books)
+
+                let pbody = document.getElementById("pbody");
+
+                for (let i = 0; i < books.length; i++) {
+                    let book = books[i];
+                    let tr = document.createElement('tr');
+                    
+                    for (const [key, value] of Object.entries(book)) {
+                        let td = document.createElement('td');
+                        let tData = document.createTextNode(value);
+                        td.appendChild(tData);
+                        tr.appendChild(td);
+                    
+                    }
+                    pbody.appendChild(tr);
+                }
+            });
+            // console.log("ok")
         }
         </script>
     </body>
